@@ -1,16 +1,31 @@
+export interface WeatherItem {
+  description: string;
+  main: string;
+}
+
 export interface City {
-  city: string;
-  country: string;
-  weatherDescription: string;
-  temp: number;
-  feelsLike: number;
-  tempMin: number;
-  tempMax: number;
-  humidity: number;
-  windSpeed: number;
+  recordDate: string;
+  name: string;
+  id: number;
+  main: {
+    feels_like: number;
+    humidity: number;
+    temp: number;
+    temp_min: number;
+    temp_max: number;
+  };
+  sys: {
+    country: string;
+  };
+  weather: WeatherItem[];
+  wind: {
+    deg: number;
+    speed: number;
+  };
 }
 
 export interface CitiesState {
   cities: City[];
   citiesFetched: boolean;
+  currentSearchResult: string;
 }

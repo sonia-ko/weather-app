@@ -6,14 +6,22 @@ import HomePage from "./pages/HomePage";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./styles/theme";
 import NavBar from "./components/NavBar/NavBar";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { fetchCities } from "./store/actions/citiesThunks";
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const saved = localStorage.getItem("cities");
+    if (saved) {
+      const initialValue = JSON.parse(saved);
+      dispatch(fetchCities(initialValue));
+    }
+  }, []);
+
   return (
     <Router>
       <div className="App">

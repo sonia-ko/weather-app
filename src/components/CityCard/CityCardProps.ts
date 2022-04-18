@@ -8,5 +8,7 @@ interface CityCardProps {
   tempMax: number;
   humidity: number;
   windSpeed: number;
+  id: number;
+  recordDate: string;
 }
 export default CityCardProps;

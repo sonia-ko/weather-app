@@ -1,64 +1,68 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import formatDate from "../../helpers/dateFormatter";
+import { City } from "../types/CitiesState";
 
 const API_KEY = "a8c9152b3e7414954e714ff77a6dab4b";
 
-export const fetchCities = createAsyncThunk("cities/fetch", async () => {
+const getCityInfo = async (city: string) => {
   try {
-    const payload: any = [];
-    // const payload = await api.getUsers();
-    // return payload;
-    return payload;
-  } catch {
-    window.alert("Failed to fetch cities");
-  }
-});
+    const request = await fetch(
+      `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}`
+    );
+    if (!request.ok) {
+      console.log(request.status);
+      throw new Error(`${request.status}`);
+    }
 
-export const updateCity = createAsyncThunk("city/update", async (city) => {
-  try {
-    // const payload = await api.getUser(id);
-    // return payload;
+    const data = await request.json();
+    const date = new Date();
+    data.recordDate = formatDate(date);
+    return data;
   } catch {
     window.alert("Failed to update a city");
   }
-});
+};
 
-export const deleteCity = createAsyncThunk("city/delete", async (city) => {
-  try {
-    // const payload = await api.createUser(user);
-    // return payload;
-  } catch {
-    window.alert("Failed to create user");
+export const updateCity = createAsyncThunk(
+  "city/update",
+  async (city: string) => {
+    const newCity = await getCityInfo(city);
+    return newCity;
   }
-});
+);
+
+export const fetchCities = createAsyncThunk(
+  "cities/fetch",
+  async (cities: City[]) => {
+    let newCities = [];
+    try {
+      for (const city of cities) {
+        const request = await fetch(
+          `https://api.openweathermap.org/data/2.5/weather?q=${city.name}&appid=${API_KEY}`
+        );
+        if (!request.ok) {
+          console.log(request.status);
+          throw new Error(`${request.status}`);
+        }
+
+        const data = await request.json();
+        const date = new Date();
+        data.recordDate = formatDate(date);
+        newCities.push(data);
+      }
+      return newCities;
+    } catch {
+      window.alert("Failed to fetch cities");
+    }
+    return cities;
+  }
+);
 
 export const findCityInfo = createAsyncThunk(
   "city/find",
 
   async (city: string) => {
-    try {
-      console.log(
-        `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}`
-      );
-      const request = await fetch(
-        `https://cors-anywhere.herokuapp.com/http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}`,
-        {
-          method: "GET",
-          headers: {
-            "x-rapidapi-host": "community-open-weather-map.p.rapidapi.com",
-            "x-rapidapi-key": API_KEY
-          }
-        }
-      );
-
-      // if (!request.ok) {
-      //   console.log(request.status);
-      //   throw new Error(`${request.status}`);
-      // }
-
-      const data = await request.json();
-      console.log(data);
-    } catch {
-      window.alert("Failed to find this city, please try another one");
-    }
+    const newCity = await getCityInfo(city);
+    return newCity;
   }
 );

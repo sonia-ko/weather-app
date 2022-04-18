@@ -10,20 +10,30 @@ import { useRef } from "react";
 import { useDispatch } from "react-redux";
 import { findCityInfo } from "../../store/actions/citiesThunks";
 import { useState } from "react";
+import { RootState } from "../../store/store";
+import { useSelector } from "react-redux";
+import { setCurrentSearchResult } from "../../store/reducers/citiesSlice";
 
 const AddCityForm: React.FC = () => {
   const [city, setCity] = useState("");
   const searchInputRef = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch();
 
-  const handleSubmit = () => {
+  const searchResult = useSelector(
+    (state: RootState) => state.cities.currentSearchResult
+  );
+
+  const handleSubmit = (e: React.SyntheticEvent) => {
+    e.preventDefault();
     if (city) {
       dispatch(findCityInfo(city));
+      setCity("");
     }
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCity(event.target.value);
+    dispatch(setCurrentSearchResult(""));
   };
 
   return (
@@ -46,7 +56,18 @@ const AddCityForm: React.FC = () => {
             variant="outlined"
             ref={searchInputRef}
             onChange={handleChange}
+            value={city}
           />
+
+          <Typography
+            sx={{ width: "100%", mx: 0 }}
+            color={"primary"}
+            variant="body1"
+            component="p"
+            textAlign="right"
+          >
+            {searchResult ? searchResult : " "}
+          </Typography>
         </CardContent>
         <CardActions>
           <Button type="submit" sx={{ width: "100%" }} size="large">
