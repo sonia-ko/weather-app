@@ -4,13 +4,18 @@ import { City } from "../types/CitiesState";
 
 const API_KEY = "a8c9152b3e7414954e714ff77a6dab4b";
 
+interface ForecastAPIItem {
+  dt_txt: string;
+  main: {
+    temp: number;
+  };
+}
 const getCityInfo = async (city: string) => {
   try {
     const request = await fetch(
       `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}`
     );
     if (!request.ok) {
-      console.log(request.status);
       throw new Error(`${request.status}`);
     }
 
@@ -64,5 +69,32 @@ export const findCityInfo = createAsyncThunk(
   async (city: string) => {
     const newCity = await getCityInfo(city);
     return newCity;
+  }
+);
+
+export const getWeatherForecast = createAsyncThunk(
+  "city/getForecast",
+
+  async (city: string) => {
+    try {
+      const request = await fetch(
+        `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_KEY}`
+      );
+      if (!request.ok) {
+        throw new Error(`${request.status}`);
+      }
+
+      const data = await request.json();
+
+      const arr = data.list.map((el: ForecastAPIItem) => {
+        return { temp: Math.floor(el.main.temp), dt_txt: el.dt_txt };
+      });
+
+      const newObject = { selectedCity: city, items: arr };
+
+      return newObject;
+    } catch {
+      window.alert("Failed to get forecast");
+    }
   }
 );

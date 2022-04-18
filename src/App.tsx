@@ -10,6 +10,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { fetchCities } from "./store/actions/citiesThunks";
+import ForecasePage from "./pages/ForecastPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -27,10 +28,12 @@ function App() {
       <div className="App">
         <ThemeProvider theme={theme}>
           <NavBar />
+
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/home-page" element={<HomePage />} />
             <Route path="/my-cities" element={<MyCities />} />
+            <Route path="/forecast" element={<ForecasePage />} />
           </Routes>
         </ThemeProvider>
       </div>

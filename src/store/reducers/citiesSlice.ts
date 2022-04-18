@@ -1,15 +1,21 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import type { RootState } from "../store";
+
 import { CitiesState, City } from "../types/CitiesState";
-import { fetchCities, updateCity, findCityInfo } from "../actions/citiesThunks";
+import {
+  fetchCities,
+  getWeatherForecast,
+  updateCity,
+  findCityInfo
+} from "../actions/citiesThunks";
 
 const localStorageKey = "cities";
-// import { fetchProducts } from "../actions/productsThunk";
 
 const initialState: CitiesState = {
   cities: [],
   citiesFetched: false,
-  currentSearchResult: ""
+  currentSearchResult: "",
+  selectedCity: "",
+  selectedForecast: []
 };
 
 export const citiesSlice = createSlice({
@@ -18,6 +24,9 @@ export const citiesSlice = createSlice({
   reducers: {
     setCurrentSearchResult(state, action: PayloadAction<string>) {
       state.currentSearchResult = action.payload;
+    },
+    setSelectedCity(state, action: PayloadAction<string>) {
+      state.selectedCity = action.payload;
     },
     deleteCity(state, action: PayloadAction<number>) {
       state.cities = state.cities.filter((city) => city.id !== action.payload);
@@ -45,9 +54,12 @@ export const citiesSlice = createSlice({
         state.cities = newCities;
         console.log(`city ${action.payload.name} updated`);
       })
-
       .addCase(findCityInfo.pending, (state, action) => {
         state.currentSearchResult = "";
+      })
+      .addCase(getWeatherForecast.fulfilled, (state, action) => {
+        state.selectedCity = action.payload?.selectedCity || "";
+        state.selectedForecast = action.payload?.items || [];
       })
       .addCase(findCityInfo.fulfilled, (state, action: PayloadAction<City>) => {
         if (state.cities.some((el) => el.name === action.payload.name)) {
@@ -62,7 +74,7 @@ export const citiesSlice = createSlice({
   }
 });
 
-export const { setCurrentSearchResult, deleteCity } = citiesSlice.actions;
-// export const selectCount = (state: RootState) => state.cities.currentPage;
+export const { setCurrentSearchResult, deleteCity, setSelectedCity } =
+  citiesSlice.actions;
 
 export default citiesSlice.reducer;

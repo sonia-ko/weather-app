@@ -16,7 +16,7 @@ const SavedCitiesList: React.FC = () => {
     >
       {cities.map((city) => {
         return (
-          <Grid key={city.id} item xs={2} sm={4} md={4}>
+          <Grid key={city.id} item xs={6} lg={4} sm={4} md={4}>
             <CityCard
               recordDate={city.recordDate}
               id={city.id}

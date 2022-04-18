@@ -38,7 +38,7 @@ const AddCityForm: React.FC = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <Card sx={{ maxWidth: 500, mx: "auto", my: 15 }}>
+      <Card sx={{ maxWidth: 500, mx: "auto", my: 15, p: 4, boxShadow: 3 }}>
         <CardMedia
           component="img"
           alt="green iguana"

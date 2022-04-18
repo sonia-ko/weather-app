@@ -20,7 +20,7 @@ const useStyles = makeStyles({
   }
 });
 
-const pages = ["Home page", "My cities", "Other page"];
+const pages = ["Home page", "My cities", "Forecast"];
 
 const NavBar: React.FC = () => {
   const classes = useStyles();

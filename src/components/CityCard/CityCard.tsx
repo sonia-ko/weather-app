@@ -63,20 +63,20 @@ const CityCard: React.FC<CityCardProps> = ({
 
   return (
     <Box sx={{ my: 3 }}>
-      <Card sx={{ maxWidth: 345, mx: "auto", px: 2, py: 2 }}>
+      <Card sx={{ boxShadow: 3, maxWidth: 345, mx: "auto", px: 2, py: 2 }}>
         <CardHeader title={`${city}, ${country}`} subheader={recordDate} />
         <CardMedia
           component="img"
           height="194"
           image={`https://countryflagsapi.com/png/${country}`}
-          alt="Paella dish"
+          alt="Country flag"
         />
         <CardContent>
           <Typography variant="body1" gutterBottom color="text.secondary">
             Weather description: {weatherDescription}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Current temperature: {temp}
+            Current temperature: {(temp - 273.15).toFixed(1)}
           </Typography>
         </CardContent>
         <CardActions disableSpacing>
@@ -97,9 +97,15 @@ const CityCard: React.FC<CityCardProps> = ({
         </CardActions>
         <Collapse in={expanded} timeout="auto" unmountOnExit>
           <CardContent>
-            <Typography paragraph>Feels like: {feelsLike}</Typography>
-            <Typography paragraph>Minimum temperature: {tempMin}</Typography>
-            <Typography paragraph>Maximum temperature: {tempMax}</Typography>
+            <Typography paragraph>
+              Feels like: {(feelsLike - 273.15).toFixed(1)}
+            </Typography>
+            <Typography paragraph>
+              Minimum temperature: {(tempMin - 273.15).toFixed(1)}
+            </Typography>
+            <Typography paragraph>
+              Maximum temperature: {(tempMax - 273.15).toFixed(1)}
+            </Typography>
             <Typography paragraph>Humidity level: {humidity}</Typography>
             <Typography paragraph>Wind speed: {windSpeed}</Typography>
           </CardContent>

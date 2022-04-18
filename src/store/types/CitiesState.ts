@@ -24,8 +24,15 @@ export interface City {
   };
 }
 
+export interface ForecastItem {
+  temp: number;
+  dt_txt: string;
+}
+
 export interface CitiesState {
   cities: City[];
   citiesFetched: boolean;
   currentSearchResult: string;
+  selectedCity: string;
+  selectedForecast: ForecastItem[];
 }
