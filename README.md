@@ -1,3 +1,3 @@
 # Weather app
 
-[DEMO](https://github.com/user/repo/blob/branch/other_file.md)
+[DEMO](https://sonia-ko.github.io/weather-app/)
