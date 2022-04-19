@@ -6,7 +6,7 @@ import HomePage from "./pages/HomePage";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./styles/theme";
 import NavBar from "./components/NavBar/NavBar";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { HashRouter  as Router, Routes, Route } from "react-router-dom";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { fetchCities } from "./store/actions/citiesThunks";
